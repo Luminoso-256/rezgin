@@ -47,25 +47,32 @@ func (g *Game) Update() error {
 }
 
 var testmap = [][]uint8{
-	{1, 1, 1, 1, 1, 1},
-	{1, 2, 1, 2, 1, 1},
-	{1, 1, 2, 1, 2, 1},
-	{1, 2, 1, 2, 1, 1},
+	{4, 4, 0, 0, 0, 0, 0, 0, 3, 3},
+	{4, 4, 0, 0, 0, 0, 0, 0, 3, 3},
+	{4, 4, 1, 0, 0, 2, 0, 0, 3, 3},
+	{4, 4, 0, 0, 0, 2, 0, 0, 2, 0},
+	{4, 4, 0, 1, 0, 2, 0, 2, 0, 0},
+	{4, 4, 1, 0, 0, 2, 2, 0, 0, 0},
+	{4, 4, 0, 0, 0, 2, 0, 0, 0, 0},
+	{4, 4, 0, 0, 0, 0, 0, 0, 0, 0},
+	{4, 4, 4, 4, 4, 4, 4, 4, 4, 4},
+	{4, 4, 4, 4, 4, 4, 4, 4, 4, 4},
 }
 
 func (g *Game) Draw(screen *ebiten.Image) {
 	screen.Fill(color.White)
-	for i := 0; i < 4; i++ {
-		for j := 4; j >= 0; j-- {
+	for i := 0; i < 8; i++ {
+		for j := 8; j >= 0; j-- {
 			op := &ebiten.DrawImageOptions{}
 			//quasi-isometric. Pretty sure this is technically not quite correct
 			//but it looks good so i'll take it.
 			x := (float64(j) * 8) + (float64(i) * 8)
 			y := (float64(i) * 4) - (float64(j) * 4)
-
-			op.GeoM.Translate(x, y+32)
+			y += 42
+			x -= 32
+			op.GeoM.Translate(x, y)
 			if len(testmap) > i+g.px && len(testmap[i+g.px]) > j+g.py {
-				screen.DrawImage(g.assets.img[fmt.Sprintf("tile/t%v", testmap[i+g.px][j+g.py])], op)
+				screen.DrawImage(g.assets.img[fmt.Sprintf("tile/p%v", testmap[i+g.px][j+g.py])], op)
 			}
 		}
 	}
